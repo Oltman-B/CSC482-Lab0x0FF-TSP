@@ -6,8 +6,11 @@ namespace CSC482_Lab_0x0FF
     {
         static void Main(string[] args)
         {
-            Graph graph = GraphGenerator.GenerateRandomCircularGraph(10, 10);
-            Console.WriteLine(graph);
+            var graph = new EuclideanCircularGraph(10, 100);
+            TspAlgorithms tspSandbox = new TspAlgorithms(graph);
+            Console.WriteLine($"Brute Force Result = {tspSandbox.TspBruteForce()}");
+            Console.WriteLine($"Expected Result = {graph.ShortestRouteCost}");
+            //Console.WriteLine(graph);
         }
     }
 }

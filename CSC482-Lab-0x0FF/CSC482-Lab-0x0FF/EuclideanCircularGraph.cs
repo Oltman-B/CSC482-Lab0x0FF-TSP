@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CSC482_Lab_0x0FF
 {
-    static class GraphGenerator
-    { 
-        public static Graph GenerateRandomCircularGraph(int vertexCount, int radius)
+    class EuclideanCircularGraph : Graph
+    {
+        public List<int> ShortestRoute { get; private set; }
+        public double ShortestRouteCost { get; }
+
+        public EuclideanCircularGraph(int vertexCount, int radius) : base(vertexCount)
         {
-            var graph = new Graph(vertexCount);
+            GenerateRandomCircularGraph(vertexCount, radius);
+            ShortestRouteCost = vertexCount * this[0, 1];
+        }
+
+        private void GenerateRandomCircularGraph(int vertexCount, int radius)
+        {
             // Randomize vertex list so that order will be different for each call
-            List<int> vertexList = GenerateRandomVertexListFromZero(vertexCount);
+            List<int> vertexList = RandomizeVertexListFromZero(base.VertexIds);
             var xTable = new double[vertexCount];
             var yTable = new double[vertexCount];
             double stepAngle = 2 * Math.PI / vertexCount;
@@ -29,28 +36,26 @@ namespace CSC482_Lab_0x0FF
             {
                 for (int j = 0; j < vertexCount; j++)
                 {
-                    double dist = EuclideanDistance(xTable[i], xTable[j],yTable[i], yTable[j]);
-                    graph[i, j] = dist;
-                    graph[j, i] = dist;
+                    double dist = EuclideanDistance(xTable[i], xTable[j], yTable[i], yTable[j]);
+                    this[i, j] = dist;
+                    this[j, i] = dist;
                 }
             }
 
-            return graph;
+            ShortestRoute = vertexList;
         }
 
-        private static double EuclideanDistance(double x1, double x2, double y1, double y2 )
+        private static double EuclideanDistance(double x1, double x2, double y1, double y2)
         {
             return Math.Sqrt(Math.Pow((x1 - x2), 2) + Math.Pow(y1 - y2, 2));
         }
 
-        private static List<int> GenerateRandomVertexListFromZero(int vertexCount)
+        private static List<int> RandomizeVertexListFromZero(IEnumerable<int> vertices)
         {
             // Not probably the most efficient way to handle this.
-            // Fill list with vertices 1..N-1
-            return Enumerable.Range(1, vertexCount - 1)
-                .OrderBy(x => Guid.NewGuid())// Sort list by new GUIDs (randomization trick)
-                .Prepend(0).ToList(); // Prepend 0 so that it is always the starting vertex for our testing
+            // Sort list by new GUIDs (randomization trick) skip 0 because it has to be prepended.
+            vertices = vertices.Skip(1).OrderBy(x => Guid.NewGuid());
+            return vertices.Prepend(0).ToList();
         }
-
     }
 }
