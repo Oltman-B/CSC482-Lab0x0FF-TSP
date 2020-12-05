@@ -10,12 +10,29 @@ namespace CSC482_Lab_0x0FF
         public static Graph GenerateRandomCircularGraph(int vertexCount, int radius)
         {
             var graph = new Graph(vertexCount);
+            // Randomize vertex list so that order will be different for each call
             List<int> vertexList = GenerateRandomVertexListFromZero(vertexCount);
-
+            var xTable = new double[vertexCount];
+            var yTable = new double[vertexCount];
             double stepAngle = 2 * Math.PI / vertexCount;
-            for (int s = 0; s < vertexCount; s++)
+            for (int i = 0; i < vertexCount; i++)
             {
+                // Map x and y to the correct vertex for each step around circle.
+                int s = vertexList[i];
+                xTable[s] = radius * Math.Sin(s * stepAngle);
+                yTable[s] = radius * Math.Cos(s * stepAngle);
+            }
 
+            // Populate graph weights with distances between each vertex pair.
+            // This will generate a complete Undirected Graph.
+            for (int i = 0; i < vertexCount; i++)
+            {
+                for (int j = 0; j < vertexCount; j++)
+                {
+                    double dist = EuclideanDistance(xTable[i], xTable[j],yTable[i], yTable[j]);
+                    graph[i, j] = dist;
+                    graph[j, i] = dist;
+                }
             }
 
             return graph;

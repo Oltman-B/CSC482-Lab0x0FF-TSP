@@ -28,7 +28,7 @@ namespace CSC482_Lab_0x0FF
             sb.AppendFormat("{0,-5:N0}", " ");
             for (int i = 0; i < _costMatrix.GetLength(0); i++)
             {
-                sb.Append($"{i,-5:N0}");
+                sb.Append($"{i,-7:N0}");
             }
             sb.AppendLine();
             sb.AppendLine();
@@ -38,7 +38,7 @@ namespace CSC482_Lab_0x0FF
                 sb.Append($"{i}  ");
                 for (int j = 0; j < _costMatrix.GetLength(1); j++)
                 {
-                    sb.Append($"{_costMatrix[i, j],-5:N1}");
+                    sb.Append($"{_costMatrix[i, j],-7:N1}");
                 }
 
                 sb.AppendLine();
