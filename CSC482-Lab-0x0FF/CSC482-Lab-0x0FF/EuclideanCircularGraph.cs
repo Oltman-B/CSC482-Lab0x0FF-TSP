@@ -24,7 +24,7 @@ namespace CSC482_Lab_0x0FF
             double stepAngle = 2 * Math.PI / vertexCount;
             for (int i = 0; i < vertexCount; i++)
             {
-                // Map x and y to the correct vertex for each step around circle.
+                // Calculate x and y values for each position (step) around circle.
                 xTable[i] = radius * Math.Sin(i * stepAngle);
                 yTable[i] = radius * Math.Cos(i * stepAngle);
             }
@@ -35,6 +35,9 @@ namespace CSC482_Lab_0x0FF
             {
                 for (int j = 0; j < vertexCount; j++)
                 {
+                    // Need to map randomized vertices to each node.
+                    // Lookup each vertex and assign next available x, y coordinate.
+                    // This effectively randomizes the circular graph.
                     int a = vertexList[i];
                     int b = vertexList[j];
                     double dist = EuclideanDistance(xTable[i], xTable[j], yTable[i], yTable[j]);
