@@ -12,7 +12,7 @@ namespace CSC482_Lab_0x0FF
         public EuclideanCircularGraph(int vertexCount, int radius) : base(vertexCount)
         {
             GenerateRandomCircularGraph(vertexCount, radius);
-            ShortestRouteCost = vertexCount * this[0, 1];
+            ShortestRouteCost = vertexCount * this[ShortestRoute[0], ShortestRoute[1]];
         }
 
         private void GenerateRandomCircularGraph(int vertexCount, int radius)
@@ -25,9 +25,8 @@ namespace CSC482_Lab_0x0FF
             for (int i = 0; i < vertexCount; i++)
             {
                 // Map x and y to the correct vertex for each step around circle.
-                int s = vertexList[i];
-                xTable[s] = radius * Math.Sin(s * stepAngle);
-                yTable[s] = radius * Math.Cos(s * stepAngle);
+                xTable[i] = radius * Math.Sin(i * stepAngle);
+                yTable[i] = radius * Math.Cos(i * stepAngle);
             }
 
             // Populate graph weights with distances between each vertex pair.
@@ -36,9 +35,12 @@ namespace CSC482_Lab_0x0FF
             {
                 for (int j = 0; j < vertexCount; j++)
                 {
+                    int a = vertexList[i];
+                    int b = vertexList[j];
                     double dist = EuclideanDistance(xTable[i], xTable[j], yTable[i], yTable[j]);
-                    this[i, j] = dist;
-                    this[j, i] = dist;
+                    //Calculate the distance as if vertexList was in order, but then map to graph correctly.
+                    this[a, b] = dist;
+                    this[b, a] = dist;
                 }
             }
 
