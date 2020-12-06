@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -22,6 +23,15 @@ namespace CSC482_Lab_0x0FF
         {
             get => _costMatrix[i, j];
             set => _costMatrix[i, j] = value;
+        }
+
+        public void PrintRoute(List<int> verticesInRoute)
+        {
+            foreach (var v in verticesInRoute)
+            {
+                Console.Write($"{v}->");
+            }
+            Console.Write("0\n");
         }
 
         public double CalculateRouteCost(List<int> verticesInRoute)

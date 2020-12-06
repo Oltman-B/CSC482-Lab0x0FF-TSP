@@ -6,12 +6,15 @@ namespace CSC482_Lab_0x0FF
     {
         static void Main(string[] args)
         {
-            var graph = new EuclideanCircularGraph(10, 100);
-            TspAlgorithms tspSandbox = new TspAlgorithms(graph);
-            Console.WriteLine($"Brute Force Result = {tspSandbox.TspBruteForce()}");
-            Console.WriteLine($"Greedy Result = {tspSandbox.TspGreedy()}");
-            Console.WriteLine($"Expected Result = {graph.ShortestRouteCost}");
-            Console.WriteLine(graph);
+            if (TspAlgorithms.VerificationTests())
+            {
+                Console.WriteLine("Graph generation correct, moving to run time tests.");
+                TspAlgorithms.RunTimeTests();
+            }
+            else
+            {
+                Console.WriteLine("There was a problem with your graph.");
+            }
         }
     }
 }

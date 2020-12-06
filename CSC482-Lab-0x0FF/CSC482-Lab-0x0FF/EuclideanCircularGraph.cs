@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CSC482_Lab_0x0FF
@@ -11,6 +12,7 @@ namespace CSC482_Lab_0x0FF
 
         public EuclideanCircularGraph(int vertexCount, int radius) : base(vertexCount)
         {
+            Debug.Assert(vertexCount > 1, "Tsp algorithms only work with graphs of 2 or more vertices!");
             GenerateRandomCircularGraph(vertexCount, radius);
             ShortestRouteCost = vertexCount * this[ShortestRoute[0], ShortestRoute[1]];
         }

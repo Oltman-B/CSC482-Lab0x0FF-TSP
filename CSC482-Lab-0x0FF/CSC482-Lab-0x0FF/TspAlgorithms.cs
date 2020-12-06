@@ -1,19 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace CSC482_Lab_0x0FF
 {
-    class TspAlgorithms
+    static class TspAlgorithms
     {
-        public TspAlgorithms(Graph graph)
+        public static void RunTimeTests()
         {
-            Graph = graph;
+            var benchmarker = new AlgorithmBenchmarker();
+            //benchmarker.AddAlgorithmToBenchmark(TspBruteForce, TspBruteForceDoublingCalculator);
+            benchmarker.AddAlgorithmToBenchmark(TspGreedy, TspGreedyDoublingCalculator);
+
+            benchmarker.RunTimeTests();
         }
 
-        public Graph Graph { get; set; }
+        public static bool VerificationTests()
+        {
+            var graph = new EuclideanCircularGraph(10, 100);
+            if (Math.Abs(TspBruteForce(graph) - graph.ShortestRouteCost) > 0.05)
+            {
+                return false;
+            }
 
-        public double TspGreedy()
+            return true;
+        }
+
+        public static double TspGreedy(Graph Graph)
         {
             var visited = new bool[Graph.VertexCount];
             //Always starting from 0
@@ -50,17 +64,30 @@ namespace CSC482_Lab_0x0FF
                     visited[vertexCandidate] = true;
                 }
             }
+            Graph.PrintRoute(bestRoute);
             return Graph.CalculateRouteCost(bestRoute);
         }
+        public static void TspGreedyDoublingCalculator(AlgStats algStats)
+        {
+            if (algStats.n <= 2)
+            {
+                algStats.ExpectedDoublingRatio = -1;
+                algStats.ActualDoublingRatio = -1;
+                return;
+            }
 
-        public double TspBruteForce()
+            algStats.ActualDoublingRatio = algStats.TimeMicro / algStats.PrevTimeMicro;
+            algStats.ExpectedDoublingRatio = algStats.n * algStats.n / (double)((algStats.n - 1) * (algStats.n - 1));
+        }
+
+        public static double TspBruteForce(Graph Graph)
         {
             // copy initial vertex IdList
-            var bestRoute = PermuteAllRoutes(Graph.VertexIds, 1, Graph.VertexCount - 1, Graph.VertexIds);
+            var bestRoute = PermuteAllRoutes(Graph.VertexIds, 1, Graph.VertexCount - 1, Graph.VertexIds, Graph);
             return Graph.CalculateRouteCost(bestRoute);
         }
 
-        private List<int> PermuteAllRoutes(in List<int> srce, int l, int r, List<int> bestRoute)
+        private static List<int> PermuteAllRoutes(in List<int> srce, int l, int r, List<int> bestRoute, Graph Graph)
         {
             // Make copy of lists so that they can be modified in each recursive call.
             List<int> srceCopy = srce.ToList();
@@ -77,7 +104,7 @@ namespace CSC482_Lab_0x0FF
                 for (int i = l; i <= r; i++)
                 {
                     Swap(srceCopy, l, i);
-                    List<int> result = PermuteAllRoutes(srceCopy, l + 1, r, bestRouteCopy);
+                    List<int> result = PermuteAllRoutes(srceCopy, l + 1, r, bestRouteCopy, Graph);
                     double resultCost = Graph.CalculateRouteCost(result);
                     if (resultCost < bestRouteCost)
                     {
@@ -92,7 +119,31 @@ namespace CSC482_Lab_0x0FF
             return bestRouteCopy;
         }
 
-        private void Swap(List<int> srce, int a, int b)
+        public static void TspBruteForceDoublingCalculator(AlgStats algStats)
+        {
+            if (algStats.n <= 2)
+            {
+                algStats.ExpectedDoublingRatio = -1;
+                algStats.ActualDoublingRatio = -1;
+                return;
+            }
+
+            algStats.ActualDoublingRatio = algStats.TimeMicro / algStats.PrevTimeMicro;
+            algStats.ExpectedDoublingRatio = CalculateFactorial(algStats.n) / CalculateFactorial(algStats.n - 1);
+        }
+
+        private static double CalculateFactorial(int number)
+        {
+            double result = 1;
+            while (number != 1)
+            {
+                result = result * number;
+                number = number - 1;
+            }
+            return result;
+        }
+
+        private static void Swap(List<int> srce, int a, int b)
         {
             int temp = srce[a];
             srce[a] = srce[b];
