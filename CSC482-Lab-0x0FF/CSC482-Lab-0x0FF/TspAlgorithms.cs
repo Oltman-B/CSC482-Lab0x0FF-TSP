@@ -40,11 +40,11 @@ namespace CSC482_Lab_0x0FF
                 int vertexCandidate = -1;
                 for (int j = 1; j < Graph.VertexCount; j++)
                 {
-                    // Skip diagonal with 0s and all visited nodes
-                    if (bestRoute[^1] == j || visited[j]) continue;
-
                     // Next path starts from previously visited vertex
                     int nextVertex = bestRoute[^1];
+
+                    // Skip diagonal with 0s and all visited nodes
+                    if (nextVertex == j || visited[j]) continue;
 
                     // If next path in attempt is less than min weight, update min weight
                     // and save vertex as potential solution.
