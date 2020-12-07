@@ -10,7 +10,7 @@ namespace CSC482_Lab_0x0FF
         public static void RunTimeTests()
         {
             var benchmarker = new AlgorithmBenchmarker();
-            //benchmarker.AddAlgorithmToBenchmark(TspBruteForce, TspBruteForceDoublingCalculator);
+            benchmarker.AddAlgorithmToBenchmark(TspBruteForce, TspBruteForceDoublingCalculator);
             benchmarker.AddAlgorithmToBenchmark(TspGreedy, TspGreedyDoublingCalculator);
 
             benchmarker.RunTimeTests();
@@ -41,7 +41,7 @@ namespace CSC482_Lab_0x0FF
                 for (int j = 1; j < Graph.VertexCount; j++)
                 {
                     // Skip diagonal with 0s and all visited nodes
-                    if (j == i || visited[j]) continue;
+                    if (bestRoute[^1] == j || visited[j]) continue;
 
                     // Next path starts from previously visited vertex
                     int nextVertex = bestRoute[^1];
@@ -64,7 +64,6 @@ namespace CSC482_Lab_0x0FF
                     visited[vertexCandidate] = true;
                 }
             }
-            Graph.PrintRoute(bestRoute);
             return Graph.CalculateRouteCost(bestRoute);
         }
         public static void TspGreedyDoublingCalculator(AlgStats algStats)
@@ -77,7 +76,7 @@ namespace CSC482_Lab_0x0FF
             }
 
             algStats.ActualDoublingRatio = algStats.TimeMicro / algStats.PrevTimeMicro;
-            algStats.ExpectedDoublingRatio = algStats.n * algStats.n / (double)((algStats.n - 1) * (algStats.n - 1));
+            algStats.ExpectedDoublingRatio = algStats.n * algStats.n / (double)((algStats.n/2) * (algStats.n/2));
         }
 
         public static double TspBruteForce(Graph Graph)

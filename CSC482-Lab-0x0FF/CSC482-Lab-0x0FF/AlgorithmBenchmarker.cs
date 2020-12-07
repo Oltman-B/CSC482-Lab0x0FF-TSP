@@ -24,7 +24,7 @@ namespace CSC482_Lab_0x0FF
         private const double MaxSecondsPerAlgorithm = 15;
         private const double MaxMicroSecondsPerAlg = MaxSecondsPerAlgorithm * 1000000;
 
-        private const double MaxSecondsPerIteration = 3;
+        private const double MaxSecondsPerIteration = 0.25;
         private const double MaxMicroSecondsPerIteration = MaxSecondsPerIteration * 1000000;
         
 
@@ -68,7 +68,7 @@ namespace CSC482_Lab_0x0FF
 
             var currentStats = new AlgStats();
 
-            for (var n = NMin; n <= NMax; n++)
+            for (var n = NMin; n <= NMax; n*=2)
             {
                 currentStats.n = n;
                 if (currentStats.TimeMicro > MaxMicroSecondsPerAlg)
@@ -118,7 +118,7 @@ namespace CSC482_Lab_0x0FF
         {
             Console.WriteLine($"Starting run-time tests for {algorithm.Method.Name}...\n");
             Console.WriteLine(
-                " \t\t\t           |    |            Plus One Ratios     |    |    Algorithm|   |             Result|");
+                " \t\t\t           |    |            Doubling Ratios     |    |    Algorithm|   |             Result|");
             Console.WriteLine(
                 "X\t\t\t       Time|    |         Actual|        Expected|    |       Result|   |  Correctness Ratio|");
         }

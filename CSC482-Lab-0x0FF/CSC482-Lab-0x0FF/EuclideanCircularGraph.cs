@@ -13,14 +13,19 @@ namespace CSC482_Lab_0x0FF
         public EuclideanCircularGraph(int vertexCount, int radius) : base(vertexCount)
         {
             Debug.Assert(vertexCount > 1, "Tsp algorithms only work with graphs of 2 or more vertices!");
-            GenerateRandomCircularGraph(vertexCount, radius);
+            GenerateRandomCircularGraph(radius);
             ShortestRouteCost = vertexCount * this[ShortestRoute[0], ShortestRoute[1]];
         }
 
-        private void GenerateRandomCircularGraph(int vertexCount, int radius)
+        public EuclideanCircularGraph(List<int> vertexList, int radius) : base(vertexList.Count)
         {
-            // Randomize vertex list so that order will be different for each call
-            List<int> vertexList = RandomizeVertexListFromZero(base.VertexIds);
+            GenerateCircularGraph(vertexList, radius);
+            ShortestRouteCost = vertexList.Count * this[ShortestRoute[0], ShortestRoute[1]];
+        }
+
+        private void GenerateCircularGraph(List<int> vertexList, int radius)
+        {
+            int vertexCount = vertexList.Count;
             var xTable = new double[vertexCount];
             var yTable = new double[vertexCount];
             double stepAngle = 2 * Math.PI / vertexCount;
@@ -50,6 +55,13 @@ namespace CSC482_Lab_0x0FF
             }
 
             ShortestRoute = vertexList;
+        }
+        private void GenerateRandomCircularGraph(int radius)
+        {
+            // Randomize vertex list so that order will be different for each call
+            List<int> vertexList = RandomizeVertexListFromZero(base.VertexIds);
+            GenerateCircularGraph(vertexList, radius);
+            
         }
 
         private static double EuclideanDistance(double x1, double x2, double y1, double y2)
