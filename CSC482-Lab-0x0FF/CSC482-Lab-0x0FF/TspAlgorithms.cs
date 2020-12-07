@@ -114,7 +114,6 @@ namespace CSC482_Lab_0x0FF
                 }
             }
 
-            var tempCost = Graph.CalculateRouteCost(bestRouteCopy);
             return bestRouteCopy;
         }
 
